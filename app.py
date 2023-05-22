@@ -8,18 +8,18 @@ def index():
     return render_template('index.html')
 
 @app.route('/register', methods=['GET'])
-def register_form():
+def register():
 
-    """ Displays applications's registration form """
+    """ Handles application registration """
 
-    render_template('register.html')
+    return render_template('register.html')
 
 @app.route('/login', methods=['GET'])
-def login_form():
+def login():
 
-    """ Displays applications's registration form """
+    """ Handles application login """
 
-    render_template('login.html')
+    return render_template('login.html')
 
 
 @app.route('/dashboard', methods=['GET'])
@@ -27,7 +27,7 @@ def dashboard():
 
     """ Displays user's dashboard """
 
-    render_template('dashboard.html')
+    return render_template('dashboard.html')
 
 if __name__ == "__main__":
 
