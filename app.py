@@ -1,6 +1,19 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, url_for
+from get_url_data import url_data
 
 app = Flask(__name__)
+
+@app.route("/url", methods=['GET', 'POST'])
+def get_url():
+    """ Gets the url to moderated and returns the moderation report """
+    url = ''
+    data = ''
+    if request.method == 'POST':
+        url = request.form['url']
+
+        data = url_data(url)
+
+    return render_template('test_form.html', url=url, data=data)
 
 @app.route("/", methods=['GET'])
 def index():
