@@ -40,7 +40,7 @@ def login():
 def dashboard():
 
     """ Displays user's dashboard """
-    text = 'Contact rick(at)gmail(dot)com to have s_*_x'
+    text = url_data('param') # param is the API endpoint 
 
     mod_report = get_mod_data(text)
 
