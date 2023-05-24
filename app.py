@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, jsonify
 from get_url_data import url_data
+from fetch_api_data import get_mod_data
 
 app = Flask(__name__)
 
@@ -8,9 +9,9 @@ def get_url():
     """ Gets the url to moderated and returns the moderation report """
     url = ''
     data = ''
+
     if request.method == 'POST':
         url = request.form['url']
-
         data = url_data(url)
 
     return render_template('test_form.html', url=url, data=data)
@@ -35,12 +36,15 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/dashboard', methods=['GET'])
+@app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
 
     """ Displays user's dashboard """
+    text = 'Contact rick(at)gmail(dot)com to have s_*_x'
 
-    return render_template('dashboard.html')
+    mod_report = get_mod_data(text)
+
+    return render_template('dashboard.html', mod_report=mod_report)
 
 if __name__ == "__main__":
 
