@@ -20,7 +20,8 @@
       </p>
     <![endif]-->
     <header><h2>Register</h2></header>
-    <form action="" method="post">
+    <form action="" method="POST">
+      {{ form.hidden_tag() }}
       <section>
         <label for="name">Name</label>
         <input type="text" name="name" placeholder="Enter your name" required />
@@ -47,7 +48,7 @@
         <label for="confirm-password">Confirm password</label>
         <input
           type="password"
-          name="confirm-password"
+          name="confirm_password"
           placeholder="Enter password again"
           required
         />
@@ -56,7 +57,7 @@
         <p>Already have an account?</p>
         <a href="login.html">Login</a>
       </section>
-      <section><button type="submit">Sign up</button></section>
+      <section><button type="submit" name="register">Sign up</button></section>
     </form>
 
     <script src="" async defer></script>

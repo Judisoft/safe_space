@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, url_for, jsonify
 from get_url_data import url_data
 from fetch_api_data import get_mod_data
+from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = '9812c2e42fc2ba86735a694f8f7ee714'
 
 @app.route("/url", methods=['GET', 'POST'])
 def get_url():
@@ -21,19 +23,23 @@ def index():
     """ Returns application's Hompage"""
     return render_template('index.html')
 
-@app.route('/register', methods=['GET'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
 
-    """ Handles application registration """
+    """ Handles user registration """
 
-    return render_template('register.html')
+    form = RegistrationForm()
+
+    return render_template('register.html', form=form)
 
 @app.route('/login', methods=['GET'])
 def login():
 
-    """ Handles application login """
+    """ Handles user login """
 
-    return render_template('login.html')
+    form = LoginForm()
+
+    return render_template('login.html', form=form)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
