@@ -1,3 +1,12 @@
+body {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  background: rgb(128, 128, 191);
+  color: rgb(243, 243, 243);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
 header {
   text-align: center;
 }
@@ -13,20 +22,22 @@ a {
 
 table {
   border-collapse: collapse;
-  border: 2px solid rgb(200, 200, 200);
-  letter-spacing: 1px;
+  border: 2px solid rgb(243, 243, 243);
   font-size: 0.8rem;
   margin: auto;
+  font-size: 1.2em;
+  color: rgb(128, 128, 191);
 }
 
 td,
 th {
-  border: 1px solid rgb(190, 190, 190);
+  border: 1px solid rgb(128, 128, 191);
   padding: 10px 20px;
 }
 
 th {
   background-color: rgb(235, 235, 235);
+  font-size: 1.3rem;
 }
 
 tr:nth-child(even) {

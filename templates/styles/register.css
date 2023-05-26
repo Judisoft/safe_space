@@ -1,8 +1,8 @@
 body {
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
-  background: #8080bf;
-  color: #f3f3f3;
+  background: rgb(128, 128, 191);
+  color: rgb(243, 243, 243);
 }
 
 header {
@@ -17,7 +17,7 @@ form {
   margin-left: 25%;
   margin-right: 25%;
   margin-bottom: 4rem;
-  border: #f3f3f3 solid 5px;
+  border: rgb(243, 243, 243) solid 5px;
   border-radius: 5px;
   padding: 3rem;
   font-size: 1.2em;
@@ -37,8 +37,8 @@ input {
 button {
   width: 100%;
   padding: 0.5rem;
-  color: #f3f3f3;
-  background-color: #1b1b3f;
+  color: rgb(243, 243, 243);
+  background-color: rgb(27, 27, 63);
   font-size: 1rem;
   font-weight: 700;
   font-family: inherit;
