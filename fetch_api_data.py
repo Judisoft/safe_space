@@ -1,4 +1,4 @@
-import requests, json
+import requests
 
 def get_mod_data(text):
     """ Fetches data from Text Moderation api """
