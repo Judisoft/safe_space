@@ -1,30 +1,15 @@
+from flask import render_template, request, url_for, jsonify, flash, redirect
+from safe_space import app
+from safe_space.forms import RegistrationForm, LoginForm
+from safe_space.models import User 
+from safe_space.fetch_api_data import get_mod_data
+from safe_space.get_url_data import url_data
 from flask_bcrypt import Bcrypt
-from datetime import datetime
-from flask import Flask, render_template, request, url_for, jsonify, flash, redirect
-from flask_sqlalchemy import SQLAlchemy
-from fetch_api_data import get_mod_data
-from forms import RegistrationForm, LoginForm
-from get_url_data import url_data
+from safe_space.models import db
+from flask_login import login_user
 
-app = Flask(__name__)
 
-app.config['SECRET_KEY'] = '9812c2e42fc2ba86735a694f8f7ee714'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///safe_space.db'
-
-db =SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-
-class User(db.Model):
-    __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(20), nullable=False)
-    profile_pic = db.Column(db.String(60), nullable=False, default='default.jpg')
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-
-    def __repr__(self):
-        return f"User('{self.name}', '{self.email}', '{self.profile_pic}', '{self.created_at}')"
 
 @app.route("/url", methods=['GET', 'POST'])
 def get_url():
@@ -66,8 +51,13 @@ def login():
 
     form = LoginForm()
     if form.validate_on_submit():
-        flash(f'Welcome {form.email.data}', 'success')
-        return redirect(url_for('dashboard'))
+        user = User.query.filter_by(email=form.email.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user)
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Login Unsuccessful. Please check your email and password', 'danger')
+           
     return render_template('login.html', form=form)
 
 
@@ -80,7 +70,3 @@ def dashboard():
     # mod_report = get_mod_data(text)
 
     return render_template('dashboard.html')
-
-if __name__ == "__main__":
-
-    app.run(debug=True)
