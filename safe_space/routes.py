@@ -69,12 +69,23 @@ def login():
 def dashboard():
 
     """ Displays user's dashboard """
+    
+    url = ''    
+    text = ''
 
-    # text = url_data('param') # param is the API endpoint 
+    if request.method == 'POST':
+        url = request.form['url'] 
+        text = url_data(url)
+        # According to the text moderation API, text must not exceed 10,000 characters.
+        # However, we don't know the number of characters that will be returned by text after scrapping
+        # A walkaround will be to split the text into chunks of 9900 characters and make async requests
 
-    # mod_report = get_mod_data(text)
-
-    return render_template('dashboard.html')
+        # Use a loop to send multiple requests
+        
+    mod_report = get_mod_data(text[0:9900]) #returns the moderation report from  Texr Moderation API
+    char_len = len(text[0:9900])
+    
+    return render_template('dashboard.html', mod_report=mod_report, char_len=char_len)
 
 @app.route('/logout')
 def logout():
@@ -85,3 +96,4 @@ def logout():
 @login_required
 def profile():
     return "User Profile"
+
