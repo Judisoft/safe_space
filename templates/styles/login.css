@@ -57,8 +57,9 @@ button {
 }
 
 button:hover {
+  color: rgb(253, 255, 252);
   background-color: rgb(27, 27, 63, 0.7);
-  transition-property: background-color;
+  transition-property: color, background-color;
   transition-duration: 0.5s;
 }
 
@@ -76,4 +77,6 @@ a {
 
 a:hover {
   color: rgb(241, 250, 238, 0.7);
+  transition-property: color;
+  transition-duration: 0.5s;
 }

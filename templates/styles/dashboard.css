@@ -34,6 +34,8 @@ a {
 
 a:hover {
   color: rgb(241, 250, 238, 0.7);
+  transition-property: color;
+  transition-duration: 0.5s;
 }
 
 table {
