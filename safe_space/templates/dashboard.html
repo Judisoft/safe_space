@@ -34,8 +34,8 @@
                         <div class="card-header">Enter URL to Analyse</div>
                         <div class="card-body">
                             <form method="POST" action="{{ url_for('dashboard') }}">
-                                <input type="type" name="url" class="form-control" placeholder="http://domain.com or https://domain.com" autocomplete="off">
-                                <div class="pt-2"><button type="submit" class="btn btn-primary">Get URL</button></div>
+                                <input type="type" name="url" class="form-control" placeholder="http://domain.com or https://domain.com">
+                                <div class="pt-2"><button type="submit" class="btn btn-primary">Analyse</button></div>
                             </form>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                     <div class="card">
                         <div class="card-header">Details</div>
                         <div class="card-body">
-                            {{ char_len }}
+                            <p>{{ text }}</p>
                         </div>
                     </div>
                 </div>

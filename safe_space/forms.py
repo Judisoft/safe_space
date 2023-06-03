@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, URL
 from safe_space.models import User
 
 class RegistrationForm(FlaskForm):
@@ -25,3 +25,7 @@ class LoginForm(FlaskForm):
     email = StringField('email', validators=[DataRequired(), Email()])
     password = PasswordField('password', validators=[DataRequired()])
     submit = SubmitField('submit')
+
+
+class UrlForm(FlaskForm):
+    url = StringField('url', validators=[DataRequired(), URL()])

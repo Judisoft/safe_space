@@ -1,9 +1,10 @@
 from flask import render_template, request, url_for, jsonify, flash, redirect, request
 from safe_space import app
-from safe_space.forms import RegistrationForm, LoginForm
+from safe_space.forms import RegistrationForm, LoginForm, UrlForm
 from safe_space.models import User 
 from safe_space.fetch_api_data import get_mod_data
 from safe_space.get_url_data import url_data
+from safe_space.chunking import get_chunks
 from flask_bcrypt import Bcrypt
 from safe_space.models import db
 from flask_login import login_user, current_user, logout_user, login_required
@@ -72,20 +73,29 @@ def dashboard():
     
     url = ''    
     text = ''
+    mod_report = ''
+    chunk = []
 
     if request.method == 'POST':
         url = request.form['url'] 
         text = url_data(url)
+
         # According to the text moderation API, text must not exceed 10,000 characters.
         # However, we don't know the number of characters that will be returned by text after scrapping
         # A walkaround will be to split the text into chunks of 9900 characters and make async requests
 
-        # Use a loop to send multiple requests
+        # Chunk long text
+        chunks = get_chunks(text, 9900)
+
+        for chunked_text in chunks:
+            chunk.append(chunked_text)
+            for i in range(0, len(chunk)):
+                mod_report = get_mod_data(chunk[i])
         
-    mod_report = get_mod_data(text[0:9900]) #returns the moderation report from  Texr Moderation API
-    char_len = len(text[0:9900])
+    # mod_report = get_mod_data(text[0:9900]) #returns the moderation report from  Texr Moderation API
     
-    return render_template('dashboard.html', mod_report=mod_report, char_len=char_len)
+    return render_template('dashboard.html', mod_report=mod_report,text=text)
+
 
 @app.route('/logout')
 def logout():
