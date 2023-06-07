@@ -4,11 +4,11 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from safe_space.models import User
 
 class RegistrationForm(FlaskForm):
-    name = StringField('name', validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('email', validators=[DataRequired(), Email()])
-    password = PasswordField('password', validators=[DataRequired()])
-    confirm_password = PasswordField('confirm-password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('submit')
+    name = StringField('Name', validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm-password', validators=[DataRequired(), EqualTo('password')])
+    register = SubmitField('Register')
 
     def validate_name(self, name):
         user = User.query.filter_by(name=name.data).first()
@@ -22,9 +22,9 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('That email is chosen choose another')
 
 class LoginForm(FlaskForm):
-    email = StringField('email', validators=[DataRequired(), Email()])
-    password = PasswordField('password', validators=[DataRequired()])
-    submit = SubmitField('submit')
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    login = SubmitField('Login')
 
 
 class UrlForm(FlaskForm):
