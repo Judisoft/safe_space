@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, URL
 from safe_space.models import User
 
@@ -25,7 +25,10 @@ class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     login = SubmitField('Login')
-
-
 class UrlForm(FlaskForm):
-    url = StringField('url', validators=[DataRequired(), URL()])
+    url = StringField('Enter URL', validators=[DataRequired(), URL(require_tld=True, message='Please enter a valid URL (Ex. https://example.com)')])
+    save = SubmitField('Save URL')
+
+
+class DemoForm(FlaskForm):
+    text = StringField('Sample Text to analyse', validators=[DataRequired(), Length(min=3, max=9900)])    

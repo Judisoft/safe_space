@@ -82,7 +82,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('url_endpoints') }}">
+                <a class="nav-link" href="#">
                   <span data-feather="file"></span>
                   My Endpoints
                 </a>
@@ -130,103 +130,60 @@
           </div>
         </nav>
 
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Moderation Report </h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-              <div class="btn-group me-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-              </div>
-              <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                <span data-feather="calendar"></span>
-                This week
-              </button>
+        <main class="col-md-9 ms-sm-auto col-lg-9 px-md-4">
+            <h1 class="h2 py-3">Add URLs</h1>
+            <div class="my-4">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
             </div>
-          </div>
-          <div class="form-group">
-            <form action="" method="POST" id="url_form">
-              <label class="py-2">Select URL endpoint to analyse</label>
-              <select class="form-control mt-3 h-50" id="url_endpoint" name="url_endpoint" onchange="getUrlEndpoint(this.value)">
-                <option value="">select url endpoint</option>
-                  {% for url in user_urls %}
-                    <option value="{{ url }}">{{ url }}</option>
-                  {% endfor %}
-              </select>
+            <form action="" method="POST">
+                {{ form.hidden_tag() }}
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <div class="form-floating mb-1">
+                                {% if form.url.errors %}
+                                    {{ form.url(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                    {% for error in form.url.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                    </div>
+                                {% else %}
+                                {{ form.url(class="form-control", id="floatingInput", autocomplete="off")}}
+                                {% endif %}
+                                {{ form.url.label(for="floatingInput") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            {{ form.save(class="w-100 btn btn-success rounded-1 py-3") }}
+                        </div>
+                    </div>
+                </div>
             </form>
-          </div>
-          {% if text %}
-            <h6 class="bg-warning p-3 mt-3">{{ url_endpoint }}</h6>
-          {% endif %}
-          <div class="table-responsive mt-4">
-            <table class="table table-striped table-sm">
-              {% if text %}
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Offensive Word/Phrase</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Intensity</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-              {% endif %}
-              <tbody id="table_data"></tbody>
-            </table>
-          </div>
-          <p class="px-5 py-3 text-justify" id="highText">{{ text }}</p>
+            <h1 class="h2 py-5">My URLs</h1>
+            {% for url in user_urls %}
+                <div class="d-flex justify-content-between">
+                    <div class="p-2">
+                        <p>{{ url }}</p>
+                    </div>
+                    <div class="p-2">
+                        <a href="#" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                    </div>
+                </div>
+            {% endfor %}
         </main>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-    <script>
-      const modReport = {{ mod_report | tojson }}
-
-      // Get url from form
-      function getUrlEndpoint() {
-        const form = document.getElementById("url_form")
-        form.submit()
-      }
-
-      // Process API response and populate data in a table
-
-      if(modReport.status == 'success') {
-        const profanity = modReport.profanity.matches
-        const personal = modReport.personal.matches
-        const link = modReport.link.matches
-        let data = document.getElementById("table_data")
-        const categories = [modReport.profanity.matches, modReport.personal.matches, modReport.link.matches ]
-        data.innerHTML = ''
-        let matches = []
-        let highText =  document.getElementById("highText").innerHTML
-        document.getElementById("highText").innerHTML = ''
-
-        for(let i = 0; i < categories.length; i++) {
-          if (categories[i].length > 0) {
-            categories[i].map((item,index) => {
-                  data.innerHTML += `<tr'>
-                                      <td>${index + 1}</td>
-                                      <td> <small class='text-danger'>${item.match}</small></td>
-                                      <td><small class='rep-bg-danger'>${item.type}</small></td>
-                                      <td>${item.intensity}</td>
-                                      <td><a  href=''>view on page</a></td>
-                                    </tr>`
-                  matches.push(item.match)
-            })
-          }
-        }
-        let modText = ""
-        for(let i = 0; i < matches.length; i++) {
-          document.getElementById("highText").innerHTML += highText.replace(matches[i], `<span class='bg-warning px-3'>${matches[i]}</span>`)
-        }
-      }
-
-      if(modReport.status == 'failure') {
-        document.getElementById("table_data").textContent = modReport.error.message
-      }
-    console.log(modReport)
-      
-  </script>
 </body>
 </html>

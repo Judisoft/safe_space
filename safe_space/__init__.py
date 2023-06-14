@@ -15,3 +15,5 @@ login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 
 from safe_space import routes
+with app.app_context():
+    db.create_all()
