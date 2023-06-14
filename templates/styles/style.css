@@ -1,0 +1,136 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  padding: 0;
+  color: rgb(240, 248, 255);
+  font-size: 1.2rem;
+}
+
+header {
+}
+
+header > section {
+  background-color: rgb(231, 111, 81);
+  display: inline-block;
+  position: fixed;
+  top: 0;
+  padding-top: 3vh;
+  padding-bottom: 3vh;
+}
+
+#logo {
+  left: 0;
+  width: 100%;
+  padding-left: 10vh;
+}
+
+#logo > h1 {
+  font-size: 1.5rem;
+}
+
+#nav {
+  display: flex;
+  right: 0;
+}
+
+#nav > a {
+  padding-right: 50px;
+  text-decoration: none;
+  color: inherit;
+}
+
+#hero {
+  height: 100vh;
+  background-color: rgb(38, 70, 83);
+  padding-top: 15vh;
+}
+
+#hero-text-img {
+  display: flex;
+}
+
+#hero-img {
+  max-width: 100%;
+  border-radius: 50%;
+  margin-left: 15vh;
+  margin-right: 10vh;
+}
+
+#hero-text {
+  padding-top: 15vh;
+}
+
+#hero-text > h1 {
+  font-size: 6rem;
+  margin-bottom: 1vh;
+}
+
+#hero-butt-sec {
+  text-align: center;
+}
+
+#hero-butt-sec > button {
+  background-color: rgb(231, 111, 81);
+  border-style: none;
+  margin-top: 15vh;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.features-section, #work-with-us {
+  background-color: rgb(42, 157, 143);
+  padding: 6vh;
+}
+
+.features-section > h2, .about > h2, #work-with-us > h2 {
+  font-size: 3rem;
+  text-align: center;
+}
+
+#all-features {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 9vh;
+}
+
+.feature {
+  margin-top: 5vh;
+}
+
+.feature > p {
+  margin-top: 2vh;
+}
+
+.about {
+  background-color: rgb(38, 70, 83);
+  padding: 6vh;
+}
+
+.about > h2 {
+  font-size: 3rem;
+  text-align: center;
+}
+
+.about > p {
+  margin-left: 12vh;
+  margin-right: 12vh;
+  margin-top: 2vh;
+}
+
+#work-with-us > section {
+  display: flex;
+  gap: 9vh;
+  justify-content: space-evenly;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+}
