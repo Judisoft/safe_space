@@ -3,7 +3,13 @@ from bs4 import BeautifulSoup
 
 
 def url_data(url):
-    """ Takes a url as argument and returns its text content """
+    """ 
+        Parameters
+        -----------
+        url : str
+          url to be scraped
+    """
+
     response = requests.get(url)
     html_page = response.content
     content = BeautifulSoup(html_page, 'html.parser')

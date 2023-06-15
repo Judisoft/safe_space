@@ -1,30 +1,18 @@
-from flask import render_template, request, url_for, jsonify, flash, redirect, request
+from flask import render_template, request, url_for, jsonify, flash, redirect, request, json
 from safe_space import app
-from safe_space.forms import RegistrationForm, LoginForm, UrlForm
-from safe_space.models import User 
+from safe_space.forms import RegistrationForm, LoginForm, UrlForm, DemoForm
+from safe_space.models import User, Url
 from safe_space.fetch_api_data import get_mod_data
 from safe_space.get_url_data import url_data
-from safe_space.chunking import get_chunks
 from flask_bcrypt import Bcrypt
 from safe_space.models import db
 from flask_login import login_user, current_user, logout_user, login_required
 import schedule
 import time
 
-
 bcrypt = Bcrypt(app)
 
-@app.route("/url", methods=['GET', 'POST'])
-def get_url():
-    """ Gets the url to moderated and returns the moderation report """
-    url = ''
-    data = ''
 
-    if request.method == 'POST':
-        url = request.form['url']
-        data = url_data(url)
-
-    return render_template('test_form.html', url=url, data=data)
 
 @app.route("/", methods=['GET'])
 def index():
@@ -72,31 +60,19 @@ def login():
 def dashboard():
 
     """ Displays user's dashboard """
-    
+    user_urls = current_user.urls
     url = ''    
     text = ''
     mod_report = ''
-    chunk = []
+    url_endpoint = ''
 
     if request.method == 'POST':
-        url = request.form['url'] 
-        text = url_data(url)
+        url_endpoint = request.form['url_endpoint']
+        text = url_data(url_endpoint)
+        # if len(text) < 10000:
+        mod_report = get_mod_data(text)
 
-        # According to the text moderation API, text must not exceed 10,000 characters.
-        # However, we don't know the number of characters that will be returned by text after scrapping
-        # A walkaround will be to split the text into chunks of 9900 characters and make async requests
-
-        # Chunk long text
-        chunks = get_chunks(text, 9900)
-
-        for chunked_text in chunks:
-            chunk.append(chunked_text)
-            for i in range(0, len(chunk)):
-                mod_report = get_mod_data(chunk[i])
-        
-    # mod_report = get_mod_data(text[0:9900]) #returns the moderation report from  Texr Moderation API
-    
-    return render_template('dashboard.html', mod_report=mod_report,text=text)
+    return render_template('dashboard.html', mod_report=mod_report,text=text, url_endpoint=url_endpoint,user_urls=user_urls)
 
 
 @app.route('/logout')
@@ -104,8 +80,36 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
     return "User Profile"
+
+@app.route('/text-moderation/demo', methods=['GET', 'POST'])
+def demo():
+
+    """ Handle API demo """
+
+    form = DemoForm()
+    text = ''
+    mod_report = ''
+    if request.method == 'POST':
+        text = request.form['text']
+        mod_report = get_mod_data(text)
+        
+    return render_template('demo.html', form=form, text=text, mod_report=mod_report)
+
+@app.route('/url', methods=['GET', 'POST'])
+def url_endpoints():
+
+    form = UrlForm()
+    if form.validate_on_submit():
+        url = Url(title=form.url.data, user_id=current_user.id)
+        db.session.add(url)
+        db.session.commit()
+        flash(f'URL saved', 'success')
+        return redirect(url_for('url_endpoints'))
+    
+    user_urls = current_user.urls
+    return render_template('urls.html', form=form, user_urls=user_urls)
 
