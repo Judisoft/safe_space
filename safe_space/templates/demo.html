@@ -91,6 +91,9 @@
                             </div>
                             <div id="status"></div>
                         </form>
+                        <div class="my-3 bg-dark" id="demo-bg" style="display:none">
+                            <p id="sampleText" class="p-3 text-success px-5 rounded"></p>
+                        </div>
                         <div class="my-5 bg-light" id="report" style="display:none">
                             <h6>PROFANITY</h6>
                             <div class="d-flex flex-wrap  mt-2" id="profanity">
@@ -202,6 +205,8 @@
             
             if(textIndex < textSamples.length) {
                 let currentText = textSamples[textIndex]
+                document.getElementById("demo-bg").style.display = "block"
+                document.getElementById("sampleText").textContent = currentText
                 text.setAttribute('value', currentText)
                 textIndex++
             }

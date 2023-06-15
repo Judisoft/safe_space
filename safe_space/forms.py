@@ -10,12 +10,7 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm-password', validators=[DataRequired(), EqualTo('password')])
     register = SubmitField('Register')
 
-    def validate_name(self, name):
-        user = User.query.filter_by(name=name.data).first()
-        if user:
-            raise ValidationError('That name is chosen choose another')
-        
-
+   
     def validate_email(self, email):
         user = User.query.filter_by(name=email.data).first()
         if user:

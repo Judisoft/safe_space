@@ -71,7 +71,6 @@ def dashboard():
         text = url_data(url_endpoint)
         # if len(text) < 10000:
         mod_report = get_mod_data(text)
-        print(mod_report)            
 
     return render_template('dashboard.html', mod_report=mod_report,text=text, url_endpoint=url_endpoint,user_urls=user_urls)
 
